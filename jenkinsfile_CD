@@ -1,0 +1,27 @@
+pipeline {
+
+   environment { 
+
+        registry = "squiroz/apitest" 
+        registryCredential = 'squiroz'
+        dockerImage = '' 
+
+    }
+  agent  {label "principal"}
+    
+  stages {
+        
+    stage('docker pull') { 
+        steps { 
+        sh "docker pull squiroz/uitest" 
+            }
+          }  
+    stage('docker run') { 
+        steps { 
+        sh "docker rm -fv ui"
+        sh "docker run -d -p 3030:3030 --name ui squiroz/apitest:latest" 
+            }
+          }
+
+    }
+  }
